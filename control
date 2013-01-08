@@ -1,0 +1,9 @@
+Package: ws.hbang.acticontact
+Name: ActiContact
+Depends: mobilesubstrate
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Add new contacts with an Activator gesture
+Maintainer: HASHBANG Productions <acticontact@hbang.ws>
+Author: HASHBANG Productions <acticontact@hbang.ws>
+Section: Tweaks
