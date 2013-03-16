@@ -1,4 +1,3 @@
-#import "HBACGlobal.h"
 #import "HBACListener.h"
 #import "HBACViewController.h"
 

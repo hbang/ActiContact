@@ -1,4 +1,3 @@
-#import "HBACGlobal.h"
 #import "HBACViewController.h"
 
 static UIWindow *addWindow;
@@ -61,9 +60,11 @@ static HBACViewController *sharedInstance;
 -(void)_dismissCompleted {
 	[previousKeyWindow makeKeyWindow];
 	[previousKeyWindow release];
-
+	previousKeyWindow = nil;
 	[addWindow release];
-	[self release];
+	addWindow = nil;
+	[sharedInstance release];
+	sharedInstance = nil;
 }
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(BOOL)interfaceOrientation {

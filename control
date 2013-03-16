@@ -1,5 +1,6 @@
 Package: ws.hbang.acticontact
 Name: ActiContact
+Pre-Depends: firmware (>= 5.0)
 Depends: mobilesubstrate
 Version: 1.0
 Architecture: iphoneos-arm
