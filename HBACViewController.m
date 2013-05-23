@@ -1,15 +1,15 @@
 #import "HBACViewController.h"
 
-static UIWindow *addWindow;
-static UIWindow *previousKeyWindow;
-static HBACViewController *sharedInstance;
+UIWindow *addWindow;
+UIWindow *previousKeyWindow;
+HBACViewController *sharedInstance;
 
 @interface HBACViewController ()
--(void)dismiss;
+- (void)dismiss;
 @end
 
 @implementation HBACViewController
-+(void)eventTriggered {
++ (void)eventTriggered {
 	if (sharedInstance) {
 		return;
 	}
@@ -17,14 +17,14 @@ static HBACViewController *sharedInstance;
 	sharedInstance = [[self alloc] init];
 
 	addWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-	addWindow.windowLevel = UIWindowLevelStatusBar + 1;
+	addWindow.windowLevel = UIWindowLevelStatusBar + 1.f;
 
 	previousKeyWindow = [UIWindow.keyWindow retain];
 	[addWindow addSubview:sharedInstance.view];
 	[addWindow makeKeyAndVisible];
 }
 
--(void)loadView {
+- (void)loadView {
 	[super loadView];
 
 	ABNewPersonViewController *newPersonViewController = [[[ABNewPersonViewController alloc] init] autorelease];
@@ -34,22 +34,22 @@ static HBACViewController *sharedInstance;
 	navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 }
 
--(void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	[self presentViewController:navigationController animated:YES completion:NULL];
 }
 
--(void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person {
+- (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person {
 	[self dismiss]; //The instance one, not the class one. Long story.
 }
 
--(void)dismiss {
+- (void)dismiss {
 	[sharedInstance dismissViewControllerAnimated:YES completion:^{
 		[sharedInstance performSelector:@selector(_dismissCompleted) withObject:nil afterDelay:0.35f];
 	}];
 }
 
-+(void)dismiss {
++ (void)dismiss {
 	if (!sharedInstance) {
 		return;
 	}
@@ -57,21 +57,23 @@ static HBACViewController *sharedInstance;
 	[sharedInstance dismiss]; //Back in my day, we could call our own class methods from instance methods...
 }
 
--(void)_dismissCompleted {
+- (void)_dismissCompleted {
 	[previousKeyWindow makeKeyWindow];
 	[previousKeyWindow release];
 	previousKeyWindow = nil;
+
 	[addWindow release];
 	addWindow = nil;
+
 	[sharedInstance release];
 	sharedInstance = nil;
 }
 
--(BOOL)shouldAutorotateToInterfaceOrientation:(BOOL)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(BOOL)interfaceOrientation {
 	return [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad ? YES : interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
 }
 
--(void)dealloc {
+- (void)dealloc {
 	[navigationController release];
 	[super dealloc];
 }
